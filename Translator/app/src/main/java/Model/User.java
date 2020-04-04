@@ -8,14 +8,14 @@ public class User {
     private String firstName;
     private String lastName;
     private ArrayList<String> languages;
-    private double charge;
+    private String charge;
     private String profile;
     private String city;
     private String state;
     private boolean verify;
     private String email;
     private String phoneNumber;
-    private double rating;
+    private String rating;
     private String userType;
     //private boolean typeTranslator;
     //private boolean typeClient;
@@ -24,7 +24,7 @@ public class User {
     }
 
 
-    public User(String userId, String firstName, String lastName, ArrayList<String> languages, double charge, String profile, String city, String state, boolean verify, String email, String phoneNumber, double rating, String userType) {
+    public User(String userId, String firstName, String lastName, ArrayList<String> languages, String charge, String profile, String city, String state, boolean verify, String email, String phoneNumber, String rating, String userType) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -74,11 +74,11 @@ public class User {
         this.languages = languages;
     }
 
-    public double getCharge() {
+    public String getCharge() {
         return charge;
     }
 
-    public void setCharge(double charge) {
+    public void setCharge(String charge) {
         this.charge = charge;
     }
 
@@ -130,9 +130,13 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public double getRating() { return rating; }
+    public String getRating() {
+        return rating;
+    }
 
-    public void setRating(double rating) { this.rating = rating; }
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
 
     public String getUserType() { return userType; }
 

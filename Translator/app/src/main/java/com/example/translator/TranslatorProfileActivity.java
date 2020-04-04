@@ -115,7 +115,7 @@ public class TranslatorProfileActivity extends AppCompatActivity {
         userRating.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long ratingString = dataSnapshot.getValue(long.class);
+                String ratingString = dataSnapshot.getValue(String.class);
                 rating.setText(ratingString+"");
             }
 

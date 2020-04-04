@@ -50,7 +50,7 @@ public class ClientRegistrationActivity extends AppCompatActivity {
                 mRef.child("state").setValue(state.getText().toString());
                 mRef.child("email").setValue(email.getText().toString());
                 mRef.child("phoneNumber").setValue(phoneNumber.getText().toString());
-                mRef.child("rating").setValue(0);
+                mRef.child("rating").setValue("0");
                 mRef.child("profile").setValue(bio.getText().toString());
                 Intent i = new Intent(ClientRegistrationActivity.this, ClientProfileActivity.class);
                 startActivity(i);

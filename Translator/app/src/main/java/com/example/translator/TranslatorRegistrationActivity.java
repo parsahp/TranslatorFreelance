@@ -65,7 +65,7 @@ public class TranslatorRegistrationActivity extends AppCompatActivity {
                 mRef.child("charge").setValue(chargingFee.getText().toString());
                 mRef.child("email").setValue(email.getText().toString());
                 mRef.child("phoneNumber").setValue(phoneNumber.getText().toString());
-                mRef.child("rating").setValue(0);
+                mRef.child("rating").setValue("0");
                 mRef.child("profile").setValue(bio.getText().toString());
                 Intent i = new Intent(TranslatorRegistrationActivity.this, TranslatorProfileActivity.class);
                 startActivity(i);
