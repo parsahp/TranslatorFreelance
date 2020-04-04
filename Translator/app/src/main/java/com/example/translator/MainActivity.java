@@ -14,8 +14,15 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     EditText emailId, password;
     Button btnSignUp;
     TextView tvSignIn;
@@ -50,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<com.google.firebase.auth.AuthResult> task) {
                             if (!task.isSuccessful()) {
-                                System.out.println("Success");
                                 Toast.makeText(MainActivity.this, "SignUp Unsuccessful, Please Try Again", Toast.LENGTH_SHORT).show();
                             } else {
-                                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                                Intent i = new Intent(MainActivity.this, UserType.class);
+                                startActivity(i);
                             }
                         }
                     });
@@ -68,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
-
             }
         });
     }

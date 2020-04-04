@@ -16,6 +16,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
     EditText emailId, password;
@@ -68,8 +73,30 @@ public class LoginActivity extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "Login Error, Please Login Again", Toast.LENGTH_SHORT).show();
                             } else {
-                                Intent intToHome = new Intent(LoginActivity.this, HomeActivity.class);
-                                startActivity(intToHome);
+                                FirebaseDatabase database =  FirebaseDatabase.getInstance();
+                                FirebaseUser user =  mFirebaseAuth.getCurrentUser();
+                                String userId = user.getUid();
+                                DatabaseReference mRef =  database.getReference().child("Users").child(userId);
+                                mRef.child(userId);
+                                DatabaseReference userType = database.getReference().child("Users").child(userId).child("userType");
+                                userType.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        String userTypeString = dataSnapshot.getValue(String.class);
+                                        if (userTypeString.equals("Client")) {
+                                            Intent intToHome = new Intent(LoginActivity.this, ClientProfileActivity.class);
+                                            startActivity(intToHome);
+                                        } else {
+                                            Intent intToHome = new Intent(LoginActivity.this, TranslatorProfileActivity.class);
+                                            startActivity(intToHome);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
                             }
                         }
                     });
