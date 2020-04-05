@@ -64,6 +64,15 @@ public class ClientHomepageActivity extends AppCompatActivity {
                     }
                 }
                 Log.e("Translators " ,""+translators.get(0).getFirstName());
+                for (User usr : translators) {
+                    translatorsContent.add(usr.getFirstName() + " " + usr.getLastName() + "\t \t \t"+ usr.getRating() +"\n" + usr.getLanguages().get(0)
+                            + "\n" + usr.getCity() + ", " + usr.getState() + "\n$ " + usr.getCharge());
+                }
+
+                ArrayAdapter arrayAdapter = getAdapter();
+
+                listView = (ListView) findViewById(R.id.window_list);
+                listView.setAdapter(arrayAdapter);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -71,7 +80,7 @@ public class ClientHomepageActivity extends AppCompatActivity {
             }
         });
         //Log.e("Translators " ,""+translators.size());
-        for (User usr : translators) {
+        /*for (User usr : translators) {
             translatorsContent.add(usr.getFirstName() + " " + usr.getLastName() + "\t \t \t"+ usr.getRating() +"\n" + usr.getLanguages().get(0)
             + "\n" + usr.getCity() + ", " + usr.getState() + "\n$ " + usr.getCharge());
         }
@@ -79,6 +88,10 @@ public class ClientHomepageActivity extends AppCompatActivity {
         ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, translatorsContent);
 
         listView = (ListView) findViewById(R.id.window_list);
-        listView.setAdapter(arrayAdapter);
+        listView.setAdapter(arrayAdapter);*/
+    }
+    public ArrayAdapter<String> getAdapter() {
+        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, translatorsContent);
+        return arrayAdapter;
     }
 }
