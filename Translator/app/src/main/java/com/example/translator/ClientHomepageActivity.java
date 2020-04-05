@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.FirebaseError;
@@ -25,8 +27,10 @@ import java.util.ArrayList;
 public class ClientHomepageActivity extends AppCompatActivity {
     Button btnLogout;
     FirebaseAuth mFirebaseAuth;
+    ListView listView;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     ArrayList<User> translators = new ArrayList<>();
+    ArrayList<String> translatorsContent = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +71,14 @@ public class ClientHomepageActivity extends AppCompatActivity {
             }
         });
         //Log.e("Translators " ,""+translators.size());
+        for (User usr : translators) {
+            translatorsContent.add(usr.getFirstName() + " " + usr.getLastName() + "\t \t \t"+ usr.getRating() +"\n" + usr.getLanguages().get(0)
+            + "\n" + usr.getCity() + ", " + usr.getState() + "\n$ " + usr.getCharge());
+        }
 
+        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, translatorsContent);
 
+        listView = (ListView) findViewById(R.id.window_list);
+        listView.setAdapter(arrayAdapter);
     }
 }
