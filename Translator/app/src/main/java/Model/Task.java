@@ -6,12 +6,12 @@ public class Task {
     private String description;
     private String language;
     private String jobName;
-    private boolean isActive;
+    private String isActive;
 
     public Task() {
     }
 
-    public Task(String translatorId, String clientId, String description, String language, String jobName, boolean isActive) {
+    public Task(String translatorId, String clientId, String description, String language, String jobName, String isActive) {
         this.translatorId = translatorId;
         this.clientId = clientId;
         this.description = description;
@@ -60,11 +60,11 @@ public class Task {
         this.jobName = jobName;
     }
 
-    public boolean isActive() {
+    public String getIsActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setIsActive(String active) {
         isActive = active;
     }
 }

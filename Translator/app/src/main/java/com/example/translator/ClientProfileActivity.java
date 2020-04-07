@@ -17,6 +17,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
+import Model.Task;
+import Model.User;
+
 public class ClientProfileActivity extends AppCompatActivity {
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     TextView firstName, lastName, rating, city, state, email, phoneNumber, bio;
