@@ -4,14 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +42,11 @@ public class TranslatorHomepageActivity extends AppCompatActivity {
     DatabaseReference ref;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     BottomNavigationView bottomNavigationView;
+    String clientFirstName;
+    String clientLastName;
+    String clientRating;
+    String clientEmail;
+    String clientPhoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +105,21 @@ public class TranslatorHomepageActivity extends AppCompatActivity {
                 Log.e("Tasks " ,""+tasks.get(0).getJobName());
                 Log.e("Task ID", ""+tasksId.get(0));
                 for (Task tsk : tasks) {
-                    tasksContent.add(tsk.getJobName() + "\n" + tsk.getLanguage() + "\n" + tsk.getDescription());
+                    mFirebaseAuth = FirebaseAuth.getInstance();
+                    FirebaseDatabase database =  FirebaseDatabase.getInstance();
+                    DatabaseReference reff =  database.getReference().child("Users").child(tsk.getClientId());
+                    DatabaseReference userFirstName = reff.child("firstName");
+                    DatabaseReference userLastName = reff.child("lastName");
+
+                    clientFirstName = tsk.getClientFirstName();
+                    clientLastName = tsk.getClientLastName();
+                    clientRating = tsk.getClientRating();
+                    clientEmail = tsk.getClientEmail();
+                    clientPhoneNumber = tsk.getClientPhoneNumber();
+
+
+                    tasksContent.add(clientFirstName + " " + clientLastName + "\n\nJob Name: " + tsk.getJobName() + "\nLanguage: " + tsk.getLanguage() +
+                            "\nDescription: " + tsk.getDescription() + "\nEmail: " + clientEmail + "\nPhone Number: " + clientPhoneNumber + "\n");
                 }
 
                 ArrayAdapter arrayAdapter = getAdapter();
@@ -124,7 +147,21 @@ public class TranslatorHomepageActivity extends AppCompatActivity {
     }
 
     public ArrayAdapter<String> getAdapter() {
-        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tasksContent);
+        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tasksContent) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                TextView textView=(TextView) view.findViewById(android.R.id.text1);
+
+                textView.setTextColor(Color.WHITE);
+
+                textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+
+                return view;
+            }
+        };
         return arrayAdapter;
     }
 }

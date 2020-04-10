@@ -4,14 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,10 +35,19 @@ public class TranslatorTaskActivity extends AppCompatActivity {
     FirebaseAuth mFirebaseAuth;
     ArrayList<Task> tasks = new ArrayList<Task>();
     ArrayList<String> tasksContent = new ArrayList<String>();
+    ArrayList<String> taskId = new ArrayList<String>();
     String userId;
     ListView listView;
     DatabaseReference ref;
     BottomNavigationView bottomNavigationView;
+    String clientFirstName;
+    String clientLastName;
+    String clientRating;
+    String clientEmail;
+    String clientPhoneNumber;
+    String jobName;
+    String description;
+    String language;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,17 +99,74 @@ public class TranslatorTaskActivity extends AppCompatActivity {
                     if (post != null && post.getIsActive() != null) {
                         if (userId.equals(post.getTranslatorId())) {
                             tasks.add(post);
+                            taskId.add(postSnapshot.getKey());
                         }
                     }
                 }
 
                 for (Task tsk : tasks) {
-                    tasksContent.add(tsk.getJobName() + "\n" + tsk.getLanguage() + "\n" + tsk.getDescription());
+                    //mFirebaseAuth = FirebaseAuth.getInstance();
+                    FirebaseDatabase database =  FirebaseDatabase.getInstance();
+                    DatabaseReference reff =  database.getReference().child("Users").child(tsk.getClientId());
+                    //Log.e("Client", tsk.getClientId());
+                    DatabaseReference userFirstName = reff.child("firstName");
+                    DatabaseReference userLastName = reff.child("lastName");
+                    jobName = tsk.getJobName();
+                    language = tsk.getLanguage();
+                    description = tsk.getDescription();
+                    clientFirstName = tsk.getClientFirstName();
+                    clientLastName = tsk.getClientLastName();
+                    clientRating = tsk.getClientRating();
+                    clientEmail = tsk.getClientEmail();
+                    clientPhoneNumber = tsk.getClientPhoneNumber();
+
+                    /*userFirstName.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String firstNameString = dataSnapshot.getValue(String.class);
+                            clientFirstName = firstNameString;
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    userLastName.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String lastNameString = dataSnapshot.getValue(String.class);
+                            clientLastName = lastNameString;
+                            //Log.e("Client", clientFirstName);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });*/
+
+                    tasksContent.add(clientFirstName + " " + clientLastName + "\n\nJob Name: " + jobName + "\nLanguage: " + language + "\nDescription: " +
+                            description + "\nEmail: " + clientEmail + "\nPhone Number: " + clientPhoneNumber + "\n");
+
                 }
 
                 ArrayAdapter arrayAdapter = getAdapter();
                 listView = (ListView) findViewById(R.id.window_list);
                 listView.setAdapter(arrayAdapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Task taskk = tasks.get(position);
+                        Intent intent = new Intent(TranslatorTaskActivity.this, RateClientActivity.class);
+                        intent.putExtra("task", taskk.getClientId());
+                        intent.putExtra("taskId", taskId.get(position));
+                        //based on item add info to intent
+                        startActivity(intent);
+                    }
+                });
 
             }
 
@@ -108,7 +178,21 @@ public class TranslatorTaskActivity extends AppCompatActivity {
     }
 
     public ArrayAdapter<String> getAdapter() {
-        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tasksContent);
+        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tasksContent) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                TextView textView=(TextView) view.findViewById(android.R.id.text1);
+
+                textView.setTextColor(Color.WHITE);
+
+                textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+
+                return view;
+            }
+        };
         return arrayAdapter;
     }
 }

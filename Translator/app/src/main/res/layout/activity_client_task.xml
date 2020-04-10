@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#4DB6AC"
     tools:context=".ClientTaskActivity">
 
     <Button
         android:id="@+id/addTask"
+        android:background="@drawable/mybutton"
+        android:shadowColor="#424242"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -15,7 +18,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="21dp"
         android:layout_marginRight="21dp"
-        android:text="Add a Task" />
+        android:text="Add Task" />
 
     <ListView
         android:id="@+id/window_list"
@@ -29,7 +32,7 @@
         android:layout_width="411dp"
         android:layout_height="72dp"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@color/lightBlue"
+        android:background="#00897B"
         app:itemIconTint="@drawable/selector"
         app:itemTextColor="@drawable/selector"
         app:menu="@menu/menu_navigation" />

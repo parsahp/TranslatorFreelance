@@ -3,12 +3,16 @@ package com.example.translator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +27,7 @@ public class TranslatorRegistrationActivity extends AppCompatActivity {
     Spinner mySpinner;
     Button register;
     FirebaseAuth mFirebaseAuth;
+    TextView link;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,13 @@ public class TranslatorRegistrationActivity extends AppCompatActivity {
         phoneNumber = findViewById(R.id.phoneNumber);
         register = findViewById(R.id.register);
         bio = findViewById(R.id.bio);
+
+        link = (TextView) findViewById(R.id.link);
+        link.setClickable(true);
+        link.setMovementMethod(LinkMovementMethod.getInstance());
+        String text = "<a href='https://avantassessment.com/stamp'> https://avantassessment.com/stamp </a>";
+        link.setText(Html.fromHtml(text));
+        link.setLinkTextColor(Color.WHITE);
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override

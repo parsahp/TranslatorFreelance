@@ -4,13 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -81,12 +87,33 @@ public class ClientTaskActivity extends AppCompatActivity {
                 }
                 //Log.e("Tasks " ,""+tasks.get(0).getJobName());
                 for (Task tsk : tasks) {
-                    tasksContent.add(tsk.getJobName() + "\n" + tsk.getLanguage() + "\n" + tsk.getDescription());
+                    String act = "";
+                    if (tsk != null && tsk.getIsActive() != null) {
+                        if (tsk.getIsActive().equals("true")) {
+                            act = "Active";
+                        } else {
+                            act = "Not active";
+                        }
+                        tasksContent.add("Job Name: " + tsk.getJobName() + "\n\nLanguage: " + tsk.getLanguage() + "\nDescription: " + tsk.getDescription() + "\n" + act + "\n");
+                    }
                 }
 
                 ArrayAdapter arrayAdapter = getAdapter();
                 listView = (ListView) findViewById(R.id.window_list);
                 listView.setAdapter(arrayAdapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Task taskk = tasks.get(position);
+                        if (taskk.getIsActive().equals("false")) {
+                            Intent intent = new Intent(ClientTaskActivity.this, RateTranslatorActivity.class);
+                            intent.putExtra("task", taskk.getTranslatorId());
+                            //based on item add info to intent
+                            startActivity(intent);
+                        }
+                    }
+                });
             }
 
             @Override
@@ -107,7 +134,21 @@ public class ClientTaskActivity extends AppCompatActivity {
     }
 
     public ArrayAdapter<String> getAdapter() {
-        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tasksContent);
+        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tasksContent) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                TextView textView=(TextView) view.findViewById(android.R.id.text1);
+
+                textView.setTextColor(Color.WHITE);
+
+                textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+
+                return view;
+            }
+        };
         return arrayAdapter;
     }
 }

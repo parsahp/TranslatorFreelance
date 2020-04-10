@@ -42,12 +42,12 @@ public class TranslatorLookupActivity extends AppCompatActivity {
         firstName.setText(user.getFirstName());
         lastName.setText(user.getLastName());
         rating.setText(user.getRating());
-        city.setText(user.getCity());
+        city.setText(user.getCity() + ",");
         state.setText(user.getState());
         email.setText(user.getEmail());
         phoneNumber.setText(user.getPhoneNumber());
         bio.setText(user.getProfile());
-        charge.setText(user.getCharge());
+        charge.setText("$ " + user.getCharge() + "/hr");
         languages.setText(user.getLanguages().get(0));
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override

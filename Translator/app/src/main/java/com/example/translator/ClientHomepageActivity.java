@@ -5,10 +5,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,6 +38,7 @@ public class ClientHomepageActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     ArrayList<User> translators = new ArrayList<>();
     ArrayList<String> translatorsContent = new ArrayList<String>();
+    //ArrayList<String> translatorsContent2 = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +95,11 @@ public class ClientHomepageActivity extends AppCompatActivity {
                 }
                 //Log.e("Translators " ,""+translators.get(0).getFirstName());
                 for (User usr : translators) {
-                    translatorsContent.add(usr.getFirstName() + " " + usr.getLastName() + "\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t" +
-                            usr.getRating() +"\n" + usr.getLanguages().get(0)
-                            + "\n" + usr.getCity() + ", " + usr.getState() + "\n$ " + usr.getCharge() + "\n" + usr.getEmail() + "\n" + usr.getPhoneNumber());
+                    if (usr.getLanguages() != null && usr.getLanguages().get(0) != null) {
+                        translatorsContent.add(usr.getFirstName() + " " + usr.getLastName() + "\n\nCurrent Score: " +
+                                usr.getRating() + "\nLanguage(s): " + usr.getLanguages().get(0)
+                                + "\nLocation: " + usr.getCity() + ", " + usr.getState() + "\n$ " + usr.getCharge() + "/hr\nEmail: " + usr.getEmail() + "\nPhone Number: " + usr.getPhoneNumber() + "\n");
+                    }
                 }
 
                 ArrayAdapter arrayAdapter = getAdapter();
@@ -129,7 +135,22 @@ public class ClientHomepageActivity extends AppCompatActivity {
         listView.setAdapter(arrayAdapter);*/
     }
     public ArrayAdapter<String> getAdapter() {
-        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, translatorsContent);
+        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, translatorsContent) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                TextView textView=(TextView) view.findViewById(android.R.id.text1);
+
+                textView.setTextColor(Color.WHITE);
+
+                textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+
+                return view;
+            }
+        };
         return arrayAdapter;
     }
+
 }
